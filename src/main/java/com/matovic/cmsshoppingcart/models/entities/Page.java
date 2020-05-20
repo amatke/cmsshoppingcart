@@ -16,7 +16,7 @@ public class Page {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Size(min=2, message = "Tittle must be at least 2 characters lon")
     @NotNull
