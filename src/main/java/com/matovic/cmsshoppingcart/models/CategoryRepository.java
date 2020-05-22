@@ -6,9 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    //Category findBySlug(String slug);
-
-   // Category findBySlugAndIdNot(String slug, Long id);
-
     Category findByName(String name);
 }
