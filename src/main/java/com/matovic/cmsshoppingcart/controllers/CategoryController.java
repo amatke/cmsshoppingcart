@@ -40,11 +40,10 @@ public class CategoryController {
         redirectAttributes.addFlashAttribute("message", "Category added");
         redirectAttributes.addFlashAttribute("alertClass", "alert-success");    // message for bootstrap
 
-        String slug = category.getSlug() == "" ? category.getName().toLowerCase().replace(" ", "-")
-                : category.getSlug().toLowerCase().replace(" ", "-");
+        String slug = category.getName().toLowerCase().replace(" ", "-");
 
-        Category slugExists = categoryRepository.findBySlug(slug);
-        if(slugExists != null){
+        Category categoryExists = categoryRepository.findByName(category.getName());
+        if(categoryExists != null){
             redirectAttributes.addFlashAttribute("message", "Slug exists, chose another");
             redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
             redirectAttributes.addFlashAttribute("category", category);
@@ -69,6 +68,8 @@ public class CategoryController {
     @PostMapping("/edit")
     public String edit(@Valid Category category, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
 
+        Category categoryCurrent = categoryRepository.getOne(category.getId());
+
         if(bindingResult.hasErrors()){
             return "admin/categories/edit";   // vracamo samo gresku
         }
@@ -76,17 +77,16 @@ public class CategoryController {
         redirectAttributes.addFlashAttribute("message", "Category edited");
         redirectAttributes.addFlashAttribute("alertClass", "alert-success");    // message for bootstrap
 
-        String slug = category.getSlug() == "" ? category.getName().toLowerCase().replace(" ", "-")
-                : category.getSlug().toLowerCase().replace(" ", "-");
+        String slug = category.getName().toLowerCase().replace(" ", "-");
 
-        Category slugExists = categoryRepository.findBySlugAndIdNot(slug, category.getId());
-        if(slugExists != null){
-            redirectAttributes.addFlashAttribute("message", "Slug exists, chose another");
+        Category categoryExists = categoryRepository.findByName(category.getName());
+
+        if(categoryExists != null){
+            redirectAttributes.addFlashAttribute("message", "Category exists, chose another");
             redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
             redirectAttributes.addFlashAttribute("category", category);
         } else {
             category.setSlug(slug);
-            category.setSorting(100);   // svaka strana koja se doda postaje zadnja
 
             categoryRepository.save(category);      // cuvamo category
         }

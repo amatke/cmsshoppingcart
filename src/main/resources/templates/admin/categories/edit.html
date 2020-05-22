@@ -24,15 +24,10 @@
             <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</span>
         </div>
 
-        <div class="form-group" th:classappend="${category.slug == 'home'} ? 'd-none' : ''">
-            <label for="">Slug</label>
-            <input type="text" class="form-control" th:field="*{slug}" placeholder="Slug" >
-        </div>
-
         <input type="hidden" th:field="*{id}" th:value="${category.id}">
         <input type="hidden" th:field="*{sorting}" th:value="${category.sorting}">
 
-        <button class="btn btn-danger mb-5" >Add</button>
+        <button class="btn btn-danger mb-5" >Confirm edit</button>
     </form>
 </div>
 
