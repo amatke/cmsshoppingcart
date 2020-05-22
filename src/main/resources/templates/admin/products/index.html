@@ -1,0 +1,48 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="/fragments/head"> </head>
+
+<body>
+
+<nav th:replace="/fragments/nav :: nav-admin"></nav>
+
+<div class="container">
+
+    <h1 class="display-2">Products</h1>
+    <a href="/admin/products/add" class="btn btn-success mb-5">Add new product</a>
+
+    <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"></div>
+
+
+    <div th:if="${!products.empty}" >
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Image</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            <tr th:each="prod: ${products}">
+                <td th:text="${prod.name}"></td>
+                <td th:text="${prod.image}"></td>
+                <td th:text="${prod.category_id}"></td>
+                <td th:text="${prod.price}"></td>
+                <td><a th:href="@{'/admin/products/edit/' + ${prod.id}}" class="btn btn-primary">Edit</a></td>
+                <td><a th:href="@{'/admin/products/delete/' + ${prod.id}}" class="confirmDeletion" >Delete</a></td>
+            </tr>
+        </table>
+    </div>
+
+    <div th:unless="${!products.empty}" >
+        <h4>There are no products currently!</h4>
+    </div>
+</div>
+
+
+<footer th:replace="/fragments/foot"></footer>
+
+</body>
+</html>
