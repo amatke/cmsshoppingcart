@@ -43,6 +43,7 @@ public class CategoryController {
         String slug = category.getName().toLowerCase().replace(" ", "-");
 
         Category categoryExists = categoryRepository.findByName(category.getName());
+
         if(categoryExists != null){
             redirectAttributes.addFlashAttribute("message", "Slug exists, chose another");
             redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
@@ -68,9 +69,8 @@ public class CategoryController {
     @PostMapping("/edit")
     public String edit(@Valid Category category, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
 
-        Category categoryCurrent = categoryRepository.getOne(category.getId());
-
         if(bindingResult.hasErrors()){
+            model.addAttribute("category", categoryRepository.getOne(category.getId()));
             return "admin/categories/edit";   // vracamo samo gresku
         }
 
