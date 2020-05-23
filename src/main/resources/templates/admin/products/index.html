@@ -27,9 +27,13 @@
             </tr>
             <tr th:each="prod: ${products}">
                 <td th:text="${prod.name}"></td>
-                <td th:text="${prod.image}"></td>
-                <td th:text="${prod.category_id}"></td>
-                <td th:text="${prod.price}"></td>
+                <td>
+                    <img style="width: 100px;" th:src="@{'/media/' + ${prod.image}}">
+                </td>
+<!--                <td th:text="${cats.get('${prod.categoryId}')}"></td>-->
+<!--                <td th:text="${cats[__${prod.categoryId}__]}"></td>-->
+                <td th:text="*{cats['__${prod.categoryId}__']}"></td>
+                <td th:text="${prod.price} + '$'"></td>
                 <td><a th:href="@{'/admin/products/edit/' + ${prod.id}}" class="btn btn-primary">Edit</a></td>
                 <td><a th:href="@{'/admin/products/delete/' + ${prod.id}}" class="confirmDeletion" >Delete</a></td>
             </tr>
