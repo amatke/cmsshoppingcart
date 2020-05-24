@@ -1,7 +1,7 @@
 # CMS Shopping cart application
 
-### 1. Entities Pages, Categories and Products 
-	-Products have their category (@OneToOne, cascade deleting). Product have foreign key of category
+### 1. Entities with lombok support
+    -Java Bean models with @Data lombok.Data; support for getters, setters...
 
 ### 2. Spring MVC request mapping 
     -Request mapping (@GetMapping, @PostMaping) within @Controller class 
@@ -27,4 +27,6 @@
 			</div>
 			<span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 
-			
+### 6. SQL - MySql 
+    	-Products have their category (@OneToOne, cascade deleting). Product have foreign key of category
+    		
