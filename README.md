@@ -35,3 +35,5 @@
                     spring.datasource.password=test
                     
 ### 7. Pagination
+
+### 8. CK editor imported for textarea as rich editor support
