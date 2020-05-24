@@ -166,7 +166,12 @@ public class ProductController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) throws IOException {
+
+        Product product = productRepository.getOne(id);
+        Path path = Paths.get("src/main/resources/static/media/" + product.getImage());
+        Files.delete(path);
+
         productRepository.deleteById(id);
         redirectAttributes.addFlashAttribute("message", "Product deleted");
         redirectAttributes.addFlashAttribute("alertClass", "alert-success");
