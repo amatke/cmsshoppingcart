@@ -33,3 +33,5 @@
                     spring.datasource.url=jdbc:mysql://localhost/cmsshoppingcart?serverTimezone=UTC
                     spring.datasource.username=root
                     spring.datasource.password=test
+                    
+### 7. Pagination
