@@ -34,8 +34,8 @@ public class ProductController {
     public String index(Model model) {
         HashMap<Long, String>  cats = new HashMap<>();
         categoryRepository.findAll().forEach( cat -> cats.put(cat.getId(), cat.getName()) );
-        model.addAttribute("products", productRepository.findAll());
         model.addAttribute("cats", cats);
+        model.addAttribute("products", productRepository.findAll());
         return "admin/products/index";
     }
 
@@ -49,7 +49,8 @@ public class ProductController {
 
 
     @PostMapping("/add")
-    public String add(@Valid Product product, BindingResult bindingResult, MultipartFile file, RedirectAttributes redirectAttributes, Model model) throws IOException {
+    public String add(@Valid Product product, BindingResult bindingResult, MultipartFile file,
+                      RedirectAttributes redirectAttributes, Model model) throws IOException {
 
         if(bindingResult.hasErrors()){
             //model.addAttribute("product", product);
@@ -94,35 +95,71 @@ public class ProductController {
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
-        Product product = productRepository.getOne(id);
-        model.addAttribute("product", product);
+        model.addAttribute("product", productRepository.getOne(id));
         model.addAttribute("categories", categoryRepository.findAll());
         return "admin/products/edit";
     }
 
-    @PostMapping("/edit")
-    public String edit(@Valid Product product, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
 
-        if(bindingResult.hasErrors()){
-            model.addAttribute("product", product);
-            return "admin/products/edit";   // vracamo samo gresku
+    @PostMapping("/edit")
+    public String edit(@Valid Product product,
+                       BindingResult bindingResult,
+                       MultipartFile file,
+                       RedirectAttributes redirectAttributes,
+                       Model model) throws IOException {
+
+        Product currentProduct = productRepository.getOne(product.getId());
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("productName", currentProduct.getName());
+            model.addAttribute("categories", productRepository.findAll());
+            return "admin/products/edit";
+        }
+
+        boolean fileOK = false;
+        byte[] bytes = file.getBytes();
+        String filename = file.getOriginalFilename();
+        Path path = Paths.get("src/main/resources/static/media/" + filename);
+
+        if (!file.isEmpty()) {
+            if (filename.endsWith("jpg") || filename.endsWith("png") ) {
+                fileOK = true;
+            }
+        } else {
+            fileOK = true;
         }
 
         redirectAttributes.addFlashAttribute("message", "Product edited");
-        redirectAttributes.addFlashAttribute("alertClass", "alert-success");    // message for bootstrap
+        redirectAttributes.addFlashAttribute("alertClass", "alert-success");
 
         String slug = product.getName().toLowerCase().replace(" ", "-");
 
-        Product productExists = productRepository.findByName(product.getName());
+        Product productExists = productRepository.findBySlugAndIdNot(slug, product.getId());
 
-        if(productExists != null){
-            redirectAttributes.addFlashAttribute("message", "Product exists, chose another");
+        if (! fileOK ) {
+            redirectAttributes.addFlashAttribute("message", "Image must be a jpg or a png");
+            redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+            redirectAttributes.addFlashAttribute("product", product);
+        }
+        else if ( productExists != null ) {
+            redirectAttributes.addFlashAttribute("message", "Product exists, choose another");
             redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
             redirectAttributes.addFlashAttribute("product", product);
         } else {
+
             product.setSlug(slug);
 
-            productRepository.save(product);      // cuvamo category
+            if (!file.isEmpty()) {
+                Path path2 = Paths.get("src/main/resources/static/media/" + currentProduct.getImage());
+                Files.delete(path2);
+                product.setImage(filename);
+                Files.write(path, bytes);
+            } else {
+                product.setImage(currentProduct.getImage());
+            }
+
+            productRepository.save(product);
+
         }
 
         return "redirect:/admin/products/edit/" + product.getId();

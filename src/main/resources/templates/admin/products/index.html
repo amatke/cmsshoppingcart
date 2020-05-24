@@ -25,17 +25,26 @@
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
-            <tr th:each="prod: ${products}">
-                <td th:text="${prod.name}"></td>
+            <tr th:each="product: ${products}">
+                <td th:text="${product.name}"></td>
                 <td>
-                    <img style="width: 100px;" th:src="@{'/media/' + ${prod.image}}">
+                    <img style="width: 100px;" th:src="@{'/media/' + ${product.image}}">
                 </td>
-<!--                <td th:text="${cats.get('${prod.categoryId}')}"></td>-->
-<!--                <td th:text="${cats[__${prod.categoryId}__]}"></td>-->
-                <td th:text="*{cats['__${prod.categoryId}__']}"></td>
-                <td th:text="${prod.price} + '$'"></td>
-                <td><a th:href="@{'/admin/products/edit/' + ${prod.id}}" class="btn btn-primary">Edit</a></td>
-                <td><a th:href="@{'/admin/products/delete/' + ${prod.id}}" class="confirmDeletion" >Delete</a></td>
+
+                <!--<td th:text="${cats[__${product.categoryId}__]}"></td>-->
+                <td>
+                    <div th:each="map : ${cats}">
+                        <div th:each="mapEntry : ${map}">
+                            <!--<span th:text="${mapEntry.key}"></span> =-->
+                            <!--<span th:text="${mapEntry.value}"></span>-->
+                            <span th:text="${mapEntry.value}" th:if="${mapEntry.key} == ${product.categoryId}"></span>
+                        </div>
+                    </div>
+                </td>
+
+                <td th:text="${product.price} + '$'"></td>
+                <td><a th:href="@{'/admin/products/edit/' + ${product.id}}" class="btn btn-primary">Edit</a></td>
+                <td><a th:href="@{'/admin/products/delete/' + ${product.id}}" class="confirmDeletion" >Delete</a></td>
             </tr>
         </table>
     </div>
