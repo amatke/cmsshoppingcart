@@ -2,10 +2,11 @@ package com.matovic.cmsshoppingcart.controllers;
 
 import com.matovic.cmsshoppingcart.models.CategoryRepository;
 import com.matovic.cmsshoppingcart.models.ProductRepository;
-import com.matovic.cmsshoppingcart.models.entities.Category;
-import com.matovic.cmsshoppingcart.models.entities.Page;
 import com.matovic.cmsshoppingcart.models.entities.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,11 +32,25 @@ public class ProductController {
     private CategoryRepository categoryRepository;
 
     @GetMapping
-    public String index(Model model) {
+    public String index(Model model, @RequestParam(value = "page", required = false) Integer p) throws Exception{
+
+        int perPage = 6;                                                // proizvoda po strani
+        int page = (p != null) ? p : 0;                                 // zahtevana strana
+        Pageable pageable = PageRequest.of(page, perPage);
+        Page<Product> products = productRepository.findAll(pageable);
+        model.addAttribute("products", products);
+
+        long count = productRepository.count();                          // broj proizvoda
+        double pageCount = Math.ceil((double)count / (double)perPage);  //broj strana
+
+        model.addAttribute("pageCount", (int)pageCount);
+        model.addAttribute("perPage", perPage);
+        model.addAttribute("count", count);
+        model.addAttribute("page", page);
+
         HashMap<Long, String>  cats = new HashMap<>();
         categoryRepository.findAll().forEach( cat -> cats.put(cat.getId(), cat.getName()) );
         model.addAttribute("cats", cats);
-        model.addAttribute("products", productRepository.findAll());
         return "admin/products/index";
     }
 
