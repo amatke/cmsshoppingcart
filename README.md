@@ -3,12 +3,17 @@
 ### 1. Entities Pages, Categories and Products 
 	-Products have their category (@OneToOne, cascade deleting). Product have foreign key of category
 
-### 2. CRUD operations for Pages, Categories and Products
-
-### 3. Thymeleaf representation for Pages, Categories, Products
+### 2. Spring MVC request mapping 
+    -Request mapping (@GetMapping, @PostMaping) within @Controller class 
+    
+### 3. Spring Data JPA for CRUD and complex DB operatins:
+        Entities(Page, Product, Category,..) - @Entity, @Table, @Id,     @GeneratedValue(strategy = GenerationType.IDENTITY) ,...
+        Repositories for each entity (PageRepository,..) - interfaces which extends generic class JpaRepository<T,ID>
+        
+### 4. Thymeleaf representation for Pages, Categories, Products
 	-Names, descriptions, image, price ...
 
-### 4. Validation for Adding or Editing (Pages, Categories or Products):
+### 5. Validation for Adding or Editing (Pages, Categories or Products):
 	-javax.validation in entities @Min, @Pattern 
 	-Spring BindingResult with javax.validation @Valid
 		        if (bindingResult.hasErrors()) {
