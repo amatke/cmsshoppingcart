@@ -4,6 +4,8 @@ import com.matovic.cmsshoppingcart.models.entities.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface PageRepository extends JpaRepository<Page, Long> {
 
     Page findBySlug(String slug);           // pretrazuje Slug po prosledjenom slug
@@ -12,4 +14,6 @@ public interface PageRepository extends JpaRepository<Page, Long> {
    // Page findBySlug(Long id, String slug);
 
     Page findBySlugAndIdNot(String slug, Long id);                  // 2. nacin (aktuelan)
+
+    List<Page> findAllByOrderBySortingAsc();
 }

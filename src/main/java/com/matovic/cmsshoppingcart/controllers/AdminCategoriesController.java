@@ -13,7 +13,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/admin/categories")
-public class CategoryController {
+public class AdminCategoriesController {
 
     @Autowired
     private CategoryRepository categoryRepository;

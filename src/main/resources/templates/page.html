@@ -7,15 +7,19 @@
 
 <nav th:replace="/fragments/nav :: nav-front"></nav>
 
-<div class="container">
+<div class="container-fluid mt-5">
     <div class="row">
-        <div class="col">
-            <h1>Spring Boot</h1>
-        </div>
+
+        <div th:replace="/fragments/categories"></div>
+
+        <div class="col"> </div>
+        <div class="col-7" th:utext="${page.content}"></div>
+        <div class="col"> </div>
     </div>
 </div>
 
 
 <footer th:replace="/fragments/foot"></footer>
 
+</body>
 </html>

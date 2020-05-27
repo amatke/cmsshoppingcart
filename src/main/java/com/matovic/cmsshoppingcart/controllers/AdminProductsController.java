@@ -23,7 +23,7 @@ import java.util.HashMap;
 
 @Controller
 @RequestMapping("/admin/products")
-public class ProductController {
+public class AdminProductsController {
 
     @Autowired
     private ProductRepository productRepository;
