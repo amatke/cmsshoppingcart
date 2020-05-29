@@ -3,6 +3,12 @@
 <nav th:replace="/fragments/nav :: nav-front"></nav>
 
 <div class="container">
+
+    <div class="overlay text-center d-none">
+        <h4 class="display-4">You are being redirected to paypal...</h4>
+        <img src="/images/ajax-loader.gif" alt="">
+    </div>
+
     <h1>Cart overview</h1>
     <table class="table">
         <tr>
@@ -36,13 +42,37 @@
                 <a th:href="@{/cart/clear}" class="btn btn-danger">Clear Cart</a>
             </td>
             <td colspan="4" class="text-right">
-                <a th:href="@{/cart/checkout}" class="btn btn-primary">Check out</a>
+                <a th:href="@{/cart/checkout}" class="btn btn-primary checkout">Check out</a>
             </td>
         </tr>
-
     </table>
-
 </div>
+
+<form id="paypalform" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+    <input type="hidden" name="cmd" value="_cart">
+    <input type="hidden" name="upload" value="1">
+    <input type="hidden" name="business" value="jultranet-facilitator@gmail.com">
+
+    <th:block th:each="el, iter : ${cartMap}">
+        <input type="hidden" th:name="'item_name_'+${iter.count}" th:value="${el.value.name}">
+        <input type="hidden" th:name="'amount_'+${iter.count}" th:value="${el.value.price}">
+        <input type="hidden" th:name="'quantity_'+${iter.count}" th:value="${el.value.quantity}">
+    </th:block>
+
+    <input type="hidden" name="currency_code" value="USD">
+    <input type="image" src="http://www.paypal.com/en_US/i/btn/x-click-but01.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+</form>
+
+<script>
+        $(function () {
+            $("a.checkout").click(function (e) {
+                e.preventDefault();
+                $("div.overlay").removeClass("d-none");
+                $.get("/cart/clear", {}, function () {});
+                $("form#paypalform").submit();
+            });
+        });
+    </script>
 
 
 <footer th:replace="/fragments/foot"></footer>
