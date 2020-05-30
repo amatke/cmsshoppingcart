@@ -20,7 +20,7 @@ public class AdminPagesController {
 
     @GetMapping
     public String index(Model model) {
-        model.addAttribute("pages", pageRepository.findAll());
+        model.addAttribute("pages", pageRepository.findAllByOrderBySortingAsc());       //findAll()
         return "admin/pages/index";
     }
 

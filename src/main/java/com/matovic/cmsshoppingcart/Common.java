@@ -6,6 +6,7 @@ import com.matovic.cmsshoppingcart.models.entities.Cart;
 import com.matovic.cmsshoppingcart.models.entities.Category;
 import com.matovic.cmsshoppingcart.models.entities.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -31,8 +32,9 @@ public class Common {
             model.addAttribute("userNotLoggedIn", principal.getName());    // uzimamo ime ulogovanog usera
         }
 
-        List<Page> pages = pageRepository.findAllByOrderBySortingAsc();
-        List<Category> categories = categoryRepository.findAll();
+        List<Page> pages = pageRepository.findAll();
+        List<Category> categories = categoryRepository.findAllByOrderByNameAsc();     //findAll();
+        categories.forEach(System.out::println);
 
         boolean cartActive = false;
 
