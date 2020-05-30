@@ -1,0 +1,53 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="/fragments/head"> </head>
+
+<body>
+
+<nav th:replace="/fragments/nav :: nav-front"></nav>
+
+
+
+<div class="container">
+
+    <h3 class="display-4">Registration</h3>
+
+    <form th:action="@{/register}" th:object="${user}" method="post">
+
+        <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">There are errors</div>
+
+        <div class="form-group">
+            <label for="">Username</label>
+            <input th:field="*{username}" type="text" class="form-control" placeholder="Enter username">
+            <span class="error" th:if="${#fields.hasErrors('username')}"  th:errors="*{username}" />
+        </div>
+        <div class="form-group">
+            <label for="">Password</label>
+            <input type="password" th:field="*{password}" class="form-control" placeholder="Password">
+            <span class="error" th:if="${#fields.hasErrors('password')}"  th:errors="*{password}" />
+        </div>
+        <div class="form-group">
+            <label for="">Confirm password</label>
+            <input type="password" th:field="*{confirmPassword}"  class="form-control" placeholder="Confirm password">
+            <span class="error" th:if="${notMatchingPasswords}">Passwords are not matching<span>
+        </div>
+        <div class="form-group">
+            <label for="">Email address</label>
+            <input type="email" th:field="*{email}" class="form-control" placeholder="Enter email">
+            <span class="error" th:if="${#fields.hasErrors('email')}"  th:errors="*{email}" />
+        </div>
+        <div class="form-group">
+            <label for="">Phone number</label>
+            <input type="text" th:field="*{phoneNumber}" class="form-control" placeholder="Enter phone number">
+            <span class="error" th:if="${#fields.hasErrors('phoneNumber')}"  th:errors="*{phoneNumber}" />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+
+<footer th:replace="/fragments/foot"></footer>
+
+</body>
+</html>

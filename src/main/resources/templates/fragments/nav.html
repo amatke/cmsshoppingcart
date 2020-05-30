@@ -5,11 +5,26 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active" th:each="page : ${cpages}" th:if="${page.slug} != 'home'">
                 <a class="nav-link" th:href="@{'/' + ${page.slug} }" th:text="${page.slug}"></a>
             </li>
         </ul>
+
+        <ul class="float-right navbar-nav" th:if="${userNotLoggedIn == null}">
+            <li class="nav-item active">
+                <a th:href="@{/register}" class="nav-link">Register</a>
+            </li>
+            <li class="nav-item active">
+                <a th:href="@{/login}" class="nav-link">Login</a>
+            </li>
+        </ul>
+
+        <form th:if="${userNotLoggedIn != null}" method="post" th:action="@{/logout}">
+            <span class="text-white" th:text="${'Hi, ' + userNotLoggedIn}"></span>
+            <button class="btn btn-secondary">Logout</button>
+        </form>
 
     </div>
 </nav>
@@ -33,5 +48,12 @@
                 <a class="nav-link" href="/admin/products">Products</a>
             </li>
         </ul>
+
+        <form th:if="${userNotLoggedIn != null}" method="post" th:action="@{/logout}">
+            <span class="text-white" th:text="${'Hi, ' + userNotLoggedIn}"></span>
+            <button class="btn btn-secondary">Logout</button>
+        </form>
+
+
     </div>
 </nav>

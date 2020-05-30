@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,8 +24,12 @@ public class Common {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @ModelAttribute
-    public void sharedData(HttpSession session, Model model){
+    @ModelAttribute             // principal nam daje pristup nekom entitetu - konkretno nama ulogovanom korisniku
+    public void sharedData(HttpSession session, Model model, Principal principal){
+
+        if(principal != null){
+            model.addAttribute("userNotLoggedIn", principal.getName());    // uzimamo ime ulogovanog usera
+        }
 
         List<Page> pages = pageRepository.findAllByOrderBySortingAsc();
         List<Category> categories = categoryRepository.findAll();

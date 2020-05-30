@@ -1,0 +1,38 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="/fragments/head"> </head>
+
+<body>
+
+<nav th:replace="/fragments/nav :: nav-front"></nav>
+
+
+
+<div class="container">
+
+    <h3 class="display-4">Login</h3>
+
+    <form th:action="@{/login}" th:object="${user}" method="post">
+        <div class="form-group">
+            <label for="">Username</label>
+            <input name="username" type="text" class="form-control" placeholder="Enter username">
+        </div>
+        <div class="form-group">
+            <label for="">Password</label>
+            <input type="password" name="password" class="form-control" placeholder="Password">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+        <p>
+            Click <a th:href="@{/register}">here</a> to register.
+        </p>
+
+    </form>
+</div>
+
+
+<footer th:replace="/fragments/foot"></footer>
+
+</body>
+</html>
