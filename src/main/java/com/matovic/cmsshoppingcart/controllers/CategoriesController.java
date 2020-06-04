@@ -49,10 +49,10 @@ public class CategoriesController {
                 return "redirect:/";
             }
 
-            long categoryId = category.getId();
+            Long categoryId = category.getId();
             String categoryName = category.getName();
-            List<Product> products = productRepository.findAllByCategoryId(Long.toString(categoryId), pageable);
-            count = productRepository.countByCategoryId(Long.toString(categoryId));
+            List<Product> products = productRepository.findAllByCategoryId(categoryId, pageable);
+            count = productRepository.countByCategoryId(categoryId);
 
             model.addAttribute("products", products);
             model.addAttribute("title", categoryName);
