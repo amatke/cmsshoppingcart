@@ -17,7 +17,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     // da li postoji ovakav slug ali da id nisu isti
     Product findBySlugAndIdNot(String slug, Long id);   // za edit
 
-    List<Product> findAllByCategoryId(String categoryId, Pageable pageable);
+    List<Product> findAllByCategoryId(Long categoryId, Pageable pageable);
 
-    long countByCategoryId(String categoryId);
+    long countByCategoryId(Long categoryId);
 }
