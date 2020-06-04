@@ -22,12 +22,14 @@ public class Page {
     @NotNull
     private String title;
 
+    @Column(length = 45, nullable = false)
     private String slug;
 
     @Size(min=5, message = "Tittle must be at least 5 characters lon")
-    @NotNull
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
+    @NotNull
     private int sorting;
 
     @Override
