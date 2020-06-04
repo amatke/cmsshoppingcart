@@ -34,7 +34,6 @@ public class Common {
 
         List<Page> pages = pageRepository.findAll();
         List<Category> categories = categoryRepository.findAllByOrderByNameAsc();     //findAll();
-        categories.forEach(System.out::println);
 
         boolean cartActive = false;
 
